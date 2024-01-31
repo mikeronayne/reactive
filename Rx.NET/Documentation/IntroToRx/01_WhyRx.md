@@ -73,7 +73,7 @@ While `IEnumerable<T>` _can_ model data in motion (by using lazy evaluation like
 
 ### Possible Fit with Rx
 
-Rx can be used to represent asynchronous operations. .NET's `Task` or `Task<T>` effectively represent a single event, and `IObservable<T>` can be thought if as a generalization of this to a sequence of events. (The relationship between, say, `Task<int>` and `IObservable<int>` is similar to the relationship between `int` and `IEnumerable<int>`.)
+Rx can be used to represent asynchronous operations. .NET's `Task` or `Task<T>` effectively represent a single event, and `IObservable<T>` can be thought of as a generalization of this to a sequence of events. (The relationship between, say, `Task<int>` and `IObservable<int>` is similar to the relationship between `int` and `IEnumerable<int>`.)
 
 This means that there are some scenarios that can be dealt with either using tasks and the `async` keyword or through Rx. If at any point in your processing you need to deal with multiple values as well as single ones, Rx can do both; tasks don't handle multiple items so well. You can have a `Task<IEnumerable<int>>`, which enables you to `await` for a collection, and that's fine if all the items in the collection can be collected in a single step. The limitation with this is that once the task has produced its `IEnumerable<int>` result, your `await` has completed, and you're back to non-asynchronous iteration over that `IEnumerable<int>`. If the data can't be fetched in a single step—perhaps the `IEnumerable<int>` represents data from an API in which results are fetched in batches of 100 items at a time—its `MoveNext` will have to block your thread every time it needs to wait.
 
